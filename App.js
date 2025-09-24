@@ -65,7 +65,7 @@ app.post("/api/send-email", async (req, res) => {
     }
     if (mailOptions) {
       const result = await transporter.sendMail(mailOptions);
-      console.log(result);
+      // console.log(result);
       if (result.response && result.response.includes("OK")) {
         return res.status(200).json({ message: "email sent successfully!!" });
       } else {
@@ -78,4 +78,9 @@ app.post("/api/send-email", async (req, res) => {
     res.status(500).json({ error: "Email failed" });
   }
 });
+app.get("/api/send-email", async (req, res) => {
+    const email = process.env.EMAIL_USER || "";
+  res.send(email)}
+
+)
 app.listen(3001, () => console.log("Server running on port 3001"));  
