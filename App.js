@@ -14,6 +14,9 @@ function formatMessage(message) {
     ""
   )}</div>`;
 } 
+app.get('/',async (req,res) => {
+  res.send("Server is running")
+})
 app.post("/api/send-email", async (req, res) => {
     console.log("Received request to send email with body:", req.body);
     
