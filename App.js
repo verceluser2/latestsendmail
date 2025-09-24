@@ -3,7 +3,13 @@ const nodemailer = require("nodemailer");
 const cors = require("cors");
 require("dotenv").config();
 const app = express();
-app.use(cors());
+app.use(
+  cors({
+    origin: "*", // allow all origins
+    methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"], // allow these methods
+    allowedHeaders: ["Content-Type", "Authorization"], // allow these headers
+  })
+);
 app.use(express.json());
 function formatMessage(message) {
   const lines = message.split(/\r?\n/);
